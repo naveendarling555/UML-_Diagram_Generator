@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UML Studio AI — Text to UML</title>
+  <meta name="description" content="Turn software requirements into clear UML diagrams with UML Studio AI.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    window.mermaid = mermaid;
+    mermaid.initialize({ startOnLoad: false, theme: 'dark', securityLevel: 'strict',
+      themeVariables: { background: '#111827', primaryColor: '#1e293b', primaryTextColor: '#e5e7eb',
+        primaryBorderColor: '#64748b', lineColor: '#8b9bb0', secondaryColor: '#312e81',
+        tertiaryColor: '#172554', fontFamily: 'DM Sans' } });
+    window.dispatchEvent(new Event('mermaid-ready'));
+  </script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <nav class="topbar">
+    <a class="brand" href="#"><span class="brand-mark">U</span><span>UML<span class="brand-accent">Studio</span><small>AI DIAGRAM GENERATOR</small></span></a>
+    <div class="nav-right"><span class="status-dot"></span><span>Local workspace</span><a class="github-link" href="https://github.com/" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+  </nav>
+
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow"><span class="sparkle">✦</span> FROM REQUIREMENTS TO DIAGRAMS</div>
+      <h1>Describe it. <span>Diagram it.</span></h1>
+      <p class="hero-copy">Transform plain-English software requirements into a set of UML diagrams in seconds.</p>
+      <div class="hero-tags"><span>✧ NLP-inspired extraction</span><span>⌘ 5 diagram types</span><span>◉ Export-ready canvas</span></div>
+    </section>
+
+    <section class="workspace">
+      <div class="input-panel panel">
+        <div class="panel-heading"><div><span class="step">01</span><h2>Describe your system</h2></div><span class="live-pill">● READY</span></div>
+        <p class="muted">Explain who uses the system, what they do, and how its parts connect.</p>
+        <div class="textarea-wrap">
+          <textarea id="description" spellcheck="false" placeholder="Example: A Student Management System lets students register, log in, search courses and view results. The admin manages student details and generates reports...">A Student Management System allows students to register, log in, search courses, and view their results. The admin manages student details and generates reports. Each student has a name, email, phone, and status. The system contains courses and uses notifications to inform students.</textarea>
+          <div class="textarea-footer"><span id="word-count">0 words</span><button id="clear-btn" class="text-button" type="button">Clear text</button></div>
+        </div>
+        <div class="examples"><span class="examples-label">TRY AN EXAMPLE</span><button class="example-chip" data-example="A library system allows members to search books, borrow books, return books, and pay fines. The librarian adds books and manages member records. Each book has a title, status, and id.">Library system</button><button class="example-chip" data-example="An online shopping system lets customers search products, add items to a cart, place orders, and make payment. Admins manage products and track orders. Products have a name, price, quantity, and description.">E-commerce</button></div>
+        <button id="generate-btn" class="generate-btn" type="button"><span>✦</span> Generate UML diagrams <span class="button-arrow">→</span></button>
+        <p class="privacy-note">⌑ Your description is processed by this local app.</p>
+      </div>
+
+      <div class="output-panel panel">
+        <div class="panel-heading output-heading"><div><span class="step">02</span><h2>Diagram workspace</h2></div><span id="result-state" class="result-state">WAITING FOR INPUT</span></div>
+        <div class="metrics" id="metrics">
+          <div class="metric"><span class="metric-icon purple">◇</span><div><strong id="class-count">—</strong><small>Classes</small></div></div>
+          <div class="metric"><span class="metric-icon blue">⌘</span><div><strong id="method-count">—</strong><small>Actions</small></div></div>
+          <div class="metric"><span class="metric-icon green">↗</span><div><strong id="rel-count">—</strong><small>Relations</small></div></div>
+        </div>
+        <div class="diagram-tabs" role="tablist">
+          <button class="tab active" data-tab="class" role="tab">Class</button>
+          <button class="tab" data-tab="usecase" role="tab">Use case</button>
+          <button class="tab" data-tab="sequence" role="tab">Sequence</button>
+          <button class="tab" data-tab="activity" role="tab">Activity</button>
+          <button class="tab" data-tab="state" role="tab">State</button>
+        </div>
+        <div class="canvas-head"><span id="diagram-title">Class diagram</span><div class="canvas-actions"><button id="zoom-btn" class="icon-button" title="Fit diagram">⤢</button><button id="download-btn" class="icon-button" title="Download SVG">↓</button><button id="copy-btn" class="icon-button" title="Copy Mermaid source">⌘</button></div></div>
+        <div id="diagram-canvas" class="diagram-canvas">
+          <div class="empty-state"><div class="empty-icon">◇</div><h3>Your diagrams appear here</h3><p>Write a system description and generate your first diagram.</p><div class="mini-flow"><span>Requirements</span><b>→</b><span>NLP extraction</span><b>→</b><span>UML</span></div></div>
+        </div>
+        <div class="source-area"><button id="source-toggle" class="source-toggle">⌄ View generated Mermaid source</button><pre id="source-code" class="source-code hidden"></pre></div>
+      </div>
+    </section>
+
+    <section class="bottom-grid">
+      <div class="info-card"><div class="info-icon">✦</div><div><h3>Requirement-aware</h3><p>Extracts likely classes, actions, attributes and relationship cues from your text.</p></div></div>
+      <div class="info-card"><div class="info-icon blue-icon">⌘</div><div><h3>Five diagram views</h3><p>Explore class, use-case, sequence, activity and state diagrams in one workspace.</p></div></div>
+      <div class="info-card"><div class="info-icon green-icon">↗</div><div><h3>Ready to document</h3><p>Download an SVG image or copy the diagram source for your report.</p></div></div>
+    </section>
+    <footer><span>UML Studio AI <span class="footer-muted">· Academic prototype</span></span><span>Built for clearer software design <b>✦</b></span></footer>
+  </main>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
